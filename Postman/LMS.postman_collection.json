@@ -1,0 +1,615 @@
+{
+	"info": {
+		"_postman_id": "b6f8fc00-e671-4fb6-9e33-7ed6c427a160",
+		"name": "LMS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "40519067"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "signup",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"instructor@example.com\",\r\n  \"password\": \"12345\",\r\n  \"userTypeId\": 3\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/auth/signup"
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/auth/login?email=instructor@example.com&password=12345",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "instructor@example.com"
+								},
+								{
+									"key": "password",
+									"value": "12345"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Course",
+			"item": [
+				{
+					"name": "Add course",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"courseName\": \"programming1\",\r\n    \"instructorId\" : {\"userAccountId\": 1},\r\n    \"description\" : \"this is the p1 course for the first level semester one\",\r\n    \"duration\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/course/add_course"
+					},
+					"response": []
+				},
+				{
+					"name": "get course",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/course/course_id/2"
+					},
+					"response": []
+				},
+				{
+					"name": "update course",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"courseName\": \"Advanced Programming\",\r\n    \"description\": \"Updated description for the course.\",\r\n    \"duration\": 45\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/course/update/course_id/1"
+					},
+					"response": []
+				},
+				{
+					"name": "delete cousre",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/api/course/delete/course_id/1"
+					},
+					"response": []
+				},
+				{
+					"name": "get all course",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/course/all_courses"
+					},
+					"response": []
+				},
+				{
+					"name": "add media",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/D:/Desktop/java sb notes.txt"
+								},
+								{
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": "http://localhost:8080/api/course/upload_media/2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Lesson",
+			"item": [
+				{
+					"name": "add lesson",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"lessonName\": \"intro to Logic Design\",\r\n    \"courseId\": {\"courseId\": 2},\r\n    \"lessonDescription\": \"this is the first lesson for logic course\",\r\n    \"otp\": \"l120221093\",\r\n    \"content\": \"ziad\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/lesson/add_lesson"
+					},
+					"response": []
+				},
+				{
+					"name": "get all lesson for course",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/lesson/get_all_lessons/2"
+					},
+					"response": []
+				},
+				{
+					"name": "get lesson",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"lessonName\": \"intro to mange Design\",\r\n    \"courseId\": {\"courseId\": 2},\r\n    \"lessonDescription\": \"this is the seconde lesson for logic course\",\r\n    \"otp\": \"l120221093\",\r\n    \"content\": \"fouad\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/lesson/update/lesson_id/2"
+					},
+					"response": []
+				},
+				{
+					"name": "delete lesson",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/api/lesson/delete/lesson_id/2/course_id/2"
+					},
+					"response": []
+				},
+				{
+					"name": "student enter the lesson using otp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8080/api/lesson/studnet_enter_lesson/course_id/2/lesson_id/3/otp/l120221093"
+					},
+					"response": []
+				},
+				{
+					"name": "Lesson Attendances",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/lesson/attendances/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "update admin profile",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\" : \"ana instructor\",\r\n    \"lastName\" : \"moshen instructor\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/admin/update_profile/1"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Student",
+					"item": [
+						{
+							"name": "Student update profile",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\" : \"ana instructor\",\r\n    \"lastName\" : \"moshen instructor\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/student/update_profile/1"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Instructor",
+					"item": [
+						{
+							"name": "instructor update profile",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\" : \"ana instructor\",\r\n    \"lastName\" : \"moshen instructor\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/instructor/update_profile/1"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Enrollment",
+			"item": [
+				{
+					"name": "student enroll course",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"student\": {\r\n    \"userAccountId\": 6\r\n  },\r\n  \"course\": {\r\n    \"courseId\": 2\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/enrollment/enroll"
+					},
+					"response": []
+				},
+				{
+					"name": "view enrolled students",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/enrollment/view_enrolled_students/2"
+					},
+					"response": []
+				},
+				{
+					"name": "remove enrolled student",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/api/enrollment/remove_enrolled_student/student_id/3/course_id/2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Assignment",
+			"item": [
+				{
+					"name": "uploadAssignment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8080/api/assignment/uploadAssignment"
+					},
+					"response": []
+				},
+				{
+					"name": "gradeAssignment",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "http://localhost:8080/api/assignment/gradeAssignment/studentID=1/assigID=1/grade=100"
+					},
+					"response": []
+				},
+				{
+					"name": "saveAssignmentFeedback",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "http://localhost:8080/api/assignment/saveAssignmentFeedback/studentID=1/assigID=1/feedback=good"
+					},
+					"response": []
+				},
+				{
+					"name": "getFeedback",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/assignment/getFeedback/assignmentId=1"
+					},
+					"response": []
+				},
+				{
+					"name": "Assignment Submissions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080//api/assignment/submissions/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Quiz",
+			"item": [
+				{
+					"name": "getQuizById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/quiz/quiz_id/4"
+					},
+					"response": []
+				},
+				{
+					"name": "addQuiz",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"course_id\":1,\r\n   \"type\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/quiz/add_quiz"
+					},
+					"response": []
+				},
+				{
+					"name": "addQuestionBank",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"course_id\":2,\r\n  \"questionList\":[\r\n    {\r\n      \"question_id\": 1110,\r\n      \"question_text\": \"5.Which club is the best in the Premier League?\",\r\n      \"type\": 1,\r\n      \"options\": \"Man City-Man United-Liverpool-Chelsea\",\r\n      \"course_id\": 2,\r\n      \"correct_answer\": \"Man City\"\r\n    },\r\n    {\r\n      \"question_id\": 610,\r\n      \"question_text\": \"6.Who is the top scorer in the Premier League?\",\r\n      \"type\": 1,\r\n      \"options\": \"Harry Kane-Sergio Aguero-Robert Lewandowski-Jamie Vardy\",\r\n      \"course_id\": 2,\r\n      \"correct_answer\": \"Harry Kane\"\r\n    },\r\n    {\r\n      \"question_id\": 710,\r\n      \"question_text\": \"7.Who won the 2018 World Cup?\",\r\n      \"type\": 1,\r\n      \"options\": \"Brazil-France-Germany-Argentina\",\r\n      \"course_id\": 2,\r\n      \"correct_answer\": \"France\"\r\n    },\r\n    {\r\n      \"question_id\": 810,\r\n      \"question_text\": \"8.Which country has the most World Cup titles?\",\r\n      \"type\": 1,\r\n      \"options\": \"Brazil-Germany-Italy-Argentina\",\r\n      \"course_id\": 2,\r\n      \"correct_answer\": \"Brazil\"\r\n    },\r\n    {\r\n      \"question_id\": 910,\r\n      \"question_text\": \"9.Which club is the best in Italy?\",\r\n      \"type\": 1,\r\n      \"options\": \"Juventus-AC Milan-Inter Milan-Roma\",\r\n      \"course_id\": 2,\r\n      \"correct_answer\": \"Juventus\"\r\n    },\r\n    {\r\n      \"question_id\": 1010,\r\n      \"question_text\": \"10.Which club is the best in France?\",\r\n      \"type\": 1,\r\n      \"options\": \"Paris Saint-Germain-Marseille-Lyon-Monaco\",\r\n      \"course_id\": 2,\r\n      \"correct_answer\": \"Paris Saint-Germain\"\r\n    }\r\n    ]\r\n    \r\n  \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/quiz/add_questions_bank"
+					},
+					"response": []
+				},
+				{
+					"name": "addQuestion",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"question_id\": 7,\r\n    \"question_text\": \"1.What is your name\",\r\n    \"type\": 1,\r\n    \"options\": \"\\\"A - B - C - D\\\"\",\r\n    \"course_id\": 1,\r\n    \"correct_answer\": \"A\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/quiz/add_questions"
+					},
+					"response": []
+				},
+				{
+					"name": "getQuestionBank",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/quiz/get_question_bank/2"
+					},
+					"response": []
+				},
+				{
+					"name": "getQuizQuestions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/quiz/get_quiz_questions/4"
+					},
+					"response": []
+				},
+				{
+					"name": "GradeQuiz",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"quiz_id\":3,\r\n  \"answers\":[\"T\",\"T\",\"T\",\"F\",\"T\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/quiz/grade_quiz"
+					},
+					"response": []
+				},
+				{
+					"name": "GetQuizGradesByStudentId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/quiz/get_quiz_grade/3/student/6"
+					},
+					"response": []
+				},
+				{
+					"name": "GetQuizGrades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/quiz/grades/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"quiz",
+								"grades",
+								"1"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getActiveQuizzes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/quiz/active_quiz/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"quiz",
+								"active_quiz",
+								"2"
+							],
+							"query": [
+								{
+									"key": "course_id",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "All Notifications For Instructor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/instructor/notifications/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Unread Notifications For Instructor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/instructor/unreadnotifications/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Unread Notifications For Student",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/student/unreadnotifications/2"
+					},
+					"response": []
+				},
+				{
+					"name": "All Notifications For Student",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/student/allnotifications/2"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
