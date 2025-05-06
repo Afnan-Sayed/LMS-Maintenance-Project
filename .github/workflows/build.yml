@@ -36,4 +36,4 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Afnan-Sayed_LMS-Maintenance-Project_ee6807dd-6d01-43d1-ba10-08731e4e3d70 -Dsonar.projectName='LMS-Maintenance-Project'
+        run: mvn -B verify sonar:sonar
