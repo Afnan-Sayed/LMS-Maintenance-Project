@@ -83,7 +83,13 @@
 	</dependencies>
 
 	<build>
+		<pluginManagement>
 		<plugins>
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>5.1.0.4370</version>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -109,6 +115,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		</pluginManagement>
 	</build>
 
 </project>
