@@ -9,12 +9,19 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+//new
+import java.util.logging.Logger;
+
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+
+    //new
+    private static final Logger logger = Logger.getLogger(CustomAuthenticationSuccessHandler.class.getName());
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -37,6 +44,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.writeValue(response.getWriter(), responseBody);
 
-        System.out.println("The username " + username + " is logged in.");
+        //new
+        logger.info("The username " + username + " is logged in.");
     }
 }
