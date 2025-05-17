@@ -79,4 +79,15 @@ public class AssigmentController {
             return ResponseEntity.badRequest().body(Collections.singletonList(e.getMessage()));
         }
     }
+
+    // endpoint of the new feature
+    @GetMapping("/isSubmitted/assignmentId={assignmentId}")
+    public ResponseEntity<Boolean> isAssignmentSubmitted(@PathVariable int assignmentId, HttpServletRequest request) {
+        try {
+            boolean isSubmitted = assignmentService.isAssignmentSubmitted(assignmentId, request);
+            return ResponseEntity.ok(isSubmitted);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(false);
+        }
+    }
 }

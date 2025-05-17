@@ -206,4 +206,23 @@ public class AssignmentService {
 
 
 
+    // New Feature -> lead to change in submissionRepository to add this --> "existsByStudentAndAssignment(student, assignment)"
+
+    public boolean isAssignmentSubmitted(int assignmentId, HttpServletRequest request) {
+        Users user = (Users) request.getSession().getAttribute("user");
+        if (user == null) {
+            throw new IllegalArgumentException("You are not logged in");
+        }
+
+        Student student = studentRepository.findById(user.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("You are not a student"));
+
+        Assignment assignment = assignmentRepository.findById(assignmentId)
+                .orElseThrow(() -> new IllegalArgumentException("Assignment not found"));
+
+        return submissionRepository.existsByStudentAndAssignment(student, assignment);
+    }
+
+
+
 }
