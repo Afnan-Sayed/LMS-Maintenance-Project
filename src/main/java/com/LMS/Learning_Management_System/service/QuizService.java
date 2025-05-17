@@ -339,7 +339,15 @@ public class QuizService {
     public void gradeQuiz(GradingDto gradingDto, HttpServletRequest request) throws Exception {
         Optional<Quiz> optionalQuiz= Optional.ofNullable(quizRepository.findById(gradingDto.getQuiz_id())
                 .orElseThrow(() -> new EntityNotFoundException("No such Quiz")));
-        Quiz quiz = optionalQuiz.get();
+        Quiz quiz;
+        if(optionalQuiz.isPresent())
+        {
+            quiz = optionalQuiz.get();
+        }
+        else
+        {
+            throw new NoSuchElementException("No such Quiz");
+        }
         Users loggedInUser = (Users) request.getSession().getAttribute("user");
 
         if (loggedInUser == null) {
