@@ -79,4 +79,14 @@ public class AssigmentController {
             return ResponseEntity.badRequest().body(Collections.singletonList(e.getMessage()));
         }
     }
+
+    @DeleteMapping("/deleteAssignment/assigID={assigID}")
+    public ResponseEntity<String> deleteAssignment(@PathVariable int assigID, HttpServletRequest request ){
+        try {
+            assignmentService.deleteAssignment(assigID, request);
+            return ResponseEntity.ok("Assignment has been deleted successfully.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

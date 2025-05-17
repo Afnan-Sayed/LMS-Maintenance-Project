@@ -1,0 +1,6 @@
+projectKey=LMS-Maintenance-Project
+serverUrl=http://localhost:9000
+serverVersion=8.9.10.61524
+dashboardUrl=http://localhost:9000/dashboard?id=LMS-Maintenance-Project
+ceTaskId=AZbgJ_QMRvvnZcyfNvaT
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AZbgJ_QMRvvnZcyfNvaT

@@ -217,4 +217,24 @@ public class AssignmentService {
             throw new IllegalArgumentException("Assignment with ID " + assignmentId + " not found.");
         }
     }
+
+    public void deleteAssignment (int assigID, HttpServletRequest request)
+    {
+        Users loggedInInstructor = (Users) request.getSession().getAttribute("user");
+        if (loggedInInstructor == null) {
+            throw new IllegalArgumentException("You are not logged in");
+        }
+
+        Assignment assignment = assignmentRepository.findById(assigID)
+                .orElseThrow(()-> new IllegalArgumentException("Assignment not found"));
+
+        if (loggedInInstructor.getUserId() != assignment.getCourseID().getInstructorId().getUserAccountId()){
+            throw new IllegalArgumentException("You're not the instructor of this course");
+        }
+
+        assignmentRepository.delete(assignment);
+
+        throw new IllegalArgumentException("There is no assigment with this id");
+    }
+
 }
