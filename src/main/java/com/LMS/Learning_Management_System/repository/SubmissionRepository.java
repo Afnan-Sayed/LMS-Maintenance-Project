@@ -12,4 +12,6 @@ import java.util.List;
 public interface SubmissionRepository extends JpaRepository<Submission, Integer> {
     List<Submission> findByStudentId(Student student);
     List <Submission> findAllByAssignmentId (Assignment assignmentId);
+    // used in the New Feature
+    boolean existsByStudentAndAssignment(Student student, Assignment assignment);
 }
