@@ -4,6 +4,7 @@ import com.LMS.Learning_Management_System.dto.AssignmentDto;
 import com.LMS.Learning_Management_System.entity.*;
 import com.LMS.Learning_Management_System.repository.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,17 +18,20 @@ public class AssignmentService {
     private final CourseRepository courseRepository;
     private final StudentRepository studentRepository;
     private final EnrollmentRepository enrollmentRepository;
+    private final InstructorRepository instructorRepository;
 
     public AssignmentService(AssignmentRepository assignmentRepository, SubmissionRepository submissionRepository,
                              CourseRepository courseRepository, StudentRepository studentRepository,
-                             EnrollmentRepository enrollmentRepository) {
+                             EnrollmentRepository enrollmentRepository, InstructorRepository instructorRepository) {
         this.assignmentRepository = assignmentRepository;
         this.submissionRepository = submissionRepository;
         this.courseRepository = courseRepository;
         this.studentRepository = studentRepository;
         this.enrollmentRepository = enrollmentRepository;
+        this.instructorRepository = instructorRepository;
     }
 
+    @Transactional
     public void uploadAssignment(AssignmentDto assignment, HttpServletRequest request) {
         Users loggedInInstructor = (Users) request.getSession().getAttribute("user");
         if (loggedInInstructor == null) {
@@ -37,32 +41,14 @@ public class AssignmentService {
         Course course = courseRepository.findById(assignment.getCourseId())
                 .orElseThrow(()-> new IllegalArgumentException("Course not found"));
 
-        Student student = studentRepository.findById(loggedInInstructor.getUserId())
-                .orElseThrow(()-> new IllegalArgumentException("You're not a student"));
+        Instructor instructor = instructorRepository.findById(loggedInInstructor.getUserId())
+                .orElseThrow(()-> new IllegalArgumentException("You're not an instructor"));
 
-        Boolean isExist = enrollmentRepository.existsByStudentAndCourse(student, course);
-        if (!isExist) {
-            throw new IllegalArgumentException("You're not enrolled in this course");
-        }
-
-
-        List<Submission> submissions = submissionRepository.findByStudentId(student);
-
-        for (Submission s : submissions) {
-            if (s.getAssignmentId().getAssignmentId() == assignment.getAssignmentId()){
-                throw new IllegalArgumentException("You've already submitted this assignment");
-            }
-        }
-        Assignment assignment1 = new Assignment();
-        assignment1.setAssignmentId(assignment.getAssignmentId());
-        assignment1.setDescription(assignment.getAssignmentDescription());
-        assignment1.setCourseID(course);
-        assignment1.setTitle(assignment.getAssignmentTitle());
-
-        Submission submission = new Submission();
-        submission.setAssignmentId(assignment1);
-        submission.setStudentId(student);
-        submissionRepository.save(submission);
+//        Assignment assignment1 = new Assignment();
+//        assignment1.setTitle(assignment.getAssignmentTitle());
+//        assignment1.setDescription(assignment.getAssignmentDescription());
+//        assignment1.setCourseID(course);
+//        assignmentRepository.save(assignment1);
     }
 
 
@@ -139,31 +125,46 @@ public class AssignmentService {
     }
 
     public String getFeedback(int assigID, HttpServletRequest request) {
-        Users loggedInStudent = (Users) request.getSession().getAttribute("user");
-        if (loggedInStudent == null) {
+        Users loggedInInstructor = (Users) request.getSession().getAttribute("user");
+        if (loggedInInstructor == null) {
             throw new IllegalArgumentException("You are not logged in");
         }
-
         Assignment assignment = assignmentRepository.findById(assigID)
-                .orElseThrow(() -> new IllegalArgumentException("Assignment not found"));
+                .orElseThrow(()-> new IllegalArgumentException("Assignment not found"));
 
-        Student student = studentRepository.findById(loggedInStudent.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("You're not a student"));
 
-        boolean isEnrolled = enrollmentRepository.existsByStudentAndCourse(student, assignment.getCourseID());
-        if (!isEnrolled) {
+        Student student = studentRepository.findById(loggedInInstructor.getUserId())
+                .orElseThrow(()-> new IllegalArgumentException("You're not a student"));
+
+        Boolean isExist = enrollmentRepository.existsByStudentAndCourse(student, assignment.getCourseID());
+        if (!isExist) {
             throw new IllegalArgumentException("You're not enrolled in this course");
         }
 
-        List<Submission> submissions = submissionRepository.findByStudentId(student);
+        List<Submission> submission = submissionRepository.findByStudentId(student);
 
-        for (Submission submission : submissions) {
-            if (submission.getAssignmentId().getAssignmentId() == assignment.getAssignmentId()) {
-                return (submission.getFeedback() != null) ? submission.getFeedback() : "There is no feedback yet";
-            }
+
+        if (submission.isEmpty()) {
+            throw new IllegalArgumentException("Student has no submissions");
         }
 
+        String feedback = "";
+
+        for (Submission s : submission) {
+            if (s.getAssignmentId().getAssignmentId() == assignment.getAssignmentId()) {
+                if (s.getFeedback() == null){
+                    feedback =  "There is no feedback yet";
+                    break;
+
+            }
+                else {
+                    feedback =  s.getFeedback();
+                    break;
+                }
+        }
         throw new IllegalArgumentException("Student didn't submit this assignment");
+    }
+        return feedback;
     }
 
     public List <String> assignmentSubmissions (int assignmentId, HttpServletRequest request)
@@ -203,26 +204,23 @@ public class AssignmentService {
         }
     }
 
-
-
-
-    // New Feature -> lead to change in submissionRepository to add this --> "existsByStudentAndAssignment(student, assignment)"
-
-    public boolean isAssignmentSubmitted(int assignmentId, HttpServletRequest request) {
-        Users user = (Users) request.getSession().getAttribute("user");
-        if (user == null) {
+    public void deleteAssignment (int assigID, HttpServletRequest request)
+    {
+        Users loggedInInstructor = (Users) request.getSession().getAttribute("user");
+        if (loggedInInstructor == null) {
             throw new IllegalArgumentException("You are not logged in");
         }
 
-        Student student = studentRepository.findById(user.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("You are not a student"));
+        Assignment assignment = assignmentRepository.findById(assigID)
+                .orElseThrow(()-> new IllegalArgumentException("Assignment not found"));
 
-        Assignment assignment = assignmentRepository.findById(assignmentId)
-                .orElseThrow(() -> new IllegalArgumentException("Assignment not found"));
+        if (loggedInInstructor.getUserId() != assignment.getCourseID().getInstructorId().getUserAccountId()){
+            throw new IllegalArgumentException("You're not the instructor of this course");
+        }
 
-        return submissionRepository.existsByStudentAndAssignment(student, assignment);
+        assignmentRepository.delete(assignment);
+
+        throw new IllegalArgumentException("There is no assigment with this id");
     }
-
-
 
 }

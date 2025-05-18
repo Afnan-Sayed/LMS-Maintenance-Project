@@ -23,7 +23,8 @@ public class Course {
 
     private String description;
 
-    @Column(name = "media", nullable = true, length = 64)
+    //removed length limit
+    @Column(name = "media", nullable = true)
     private String media;
 
     private int duration;

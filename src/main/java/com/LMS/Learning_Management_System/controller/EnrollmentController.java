@@ -43,6 +43,7 @@ public class EnrollmentController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    //new feature
     @GetMapping("/count_enrolled/{courseId}")
     public ResponseEntity<?> countEnrolledStudents(@PathVariable int courseId) {
         try {

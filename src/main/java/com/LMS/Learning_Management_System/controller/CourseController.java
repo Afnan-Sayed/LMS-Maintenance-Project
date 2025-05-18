@@ -6,6 +6,7 @@ import com.LMS.Learning_Management_System.entity.Lesson;
 import com.LMS.Learning_Management_System.service.CourseService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.LMS.Learning_Management_System.entity.Users;
@@ -89,6 +90,12 @@ public class CourseController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(500).body("Internal server error: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<CourseDto>> searchCourses(@RequestParam("keyword") String keyword) {
+        List<CourseDto> result = courseService.searchCoursesByKeyword(keyword);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }
