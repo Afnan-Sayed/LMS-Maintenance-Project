@@ -174,6 +174,7 @@ public class CourseService {
         }
     }
 
+    //new feature
     public List<CourseDto> searchCoursesByKeyword(String keyword) {
         List<Course> allCourses = courseRepository.findAll();
         return allCourses.stream()
