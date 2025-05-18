@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -162,4 +163,33 @@ class EnrollmentServiceTest {
 
         assertEquals("No course found with the given ID: 1", exception.getMessage());
     }
+    @Test
+    void testCountEnrolledStudents_Success() {
+        when(courseRepository.findById(course.getCourseId())).thenReturn(Optional.of(course));
+
+        Enrollment e1 = new Enrollment();
+        Enrollment e2 = new Enrollment();
+
+        when(enrollmentRepository.findByCourse(course)).thenReturn(List.of(e1, e2));
+
+        int count = enrollmentService.countEnrolledStudents(course.getCourseId());
+
+        assertEquals(2, count);
+        verify(courseRepository).findById(course.getCourseId());
+        verify(enrollmentRepository).findByCourse(course);
+    }
+
+    @Test
+    void testCountEnrolledStudents_CourseNotFound() {
+        when(courseRepository.findById(course.getCourseId())).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            enrollmentService.countEnrolledStudents(course.getCourseId());
+        });
+
+        assertEquals("No course found with the given ID: 1", exception.getMessage());
+        verify(courseRepository).findById(course.getCourseId());
+        verify(enrollmentRepository, never()).findByCourse(any());
+    }
+
 }

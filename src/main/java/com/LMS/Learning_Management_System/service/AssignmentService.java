@@ -166,7 +166,7 @@ public class AssignmentService {
         Assignment assignment = assignmentRepository.findById(assignmentId)
                 .orElseThrow(() -> new IllegalArgumentException("Assignment not found"));
 
-        return submissionRepository.existsByStudentAndAssignment(student, assignment);
+        return submissionRepository.existsByStudentIdAndAssignmentId(student, assignment);
     }
 
     public List <String> assignmentSubmissions (int assignmentId, HttpServletRequest request)

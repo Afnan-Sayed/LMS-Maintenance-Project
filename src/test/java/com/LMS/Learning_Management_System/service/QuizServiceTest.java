@@ -154,7 +154,7 @@ public class QuizServiceTest {
             quizService.Create(1, 1, request);
         });
 
-        assertEquals("No enough Questions to create quiz!\n", exception.getMessage());
+        assertEquals("Not enough questions to create quiz!", exception.getMessage());
     }
     @Test
     void testCreateQuiz_noUnassignedQuestions() {
@@ -178,7 +178,10 @@ public class QuizServiceTest {
             quizService.Create(1, 1, request);
         });
 
-        assertEquals("No enough unassigned questions to create new quiz! number: "+0+" type "+1+"\n", exception.getMessage());
+        assertEquals(
+                "Not enough unassigned questions to create quiz! Found: 0 of type: 1",
+                exception.getMessage()
+        );
     }
     @Test
     void testGetQuizById_inValidQuiz() {

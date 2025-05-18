@@ -87,4 +87,29 @@ class EnrollmentControllerTest {
         verify(enrollmentService, times(1)).removeEnrolledStudent(eq(studentId),eq(courseId), eq(request));
     }
 
+    @Test
+    void testCountEnrolledStudents_Success() {
+        int courseId = 1;
+        when(enrollmentService.countEnrolledStudents(courseId)).thenReturn(3);
+
+        ResponseEntity<?> response = enrollmentController.countEnrolledStudents(courseId);
+
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals("Total enrolled students: 3", response.getBody());
+        verify(enrollmentService, times(1)).countEnrolledStudents(courseId);
+    }
+
+    @Test
+    void testCountEnrolledStudents_CourseNotFound() {
+        int courseId = 99;
+        when(enrollmentService.countEnrolledStudents(courseId))
+                .thenThrow(new IllegalArgumentException("No course found with the given ID: " + courseId));
+
+        ResponseEntity<?> response = enrollmentController.countEnrolledStudents(courseId);
+
+        assertEquals(400, response.getStatusCodeValue());
+        assertEquals("No course found with the given ID: 99", response.getBody());
+        verify(enrollmentService, times(1)).countEnrolledStudents(courseId);
+    }
+
 }

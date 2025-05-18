@@ -116,4 +116,27 @@ class CourseControllerTest {
         assertEquals("Course deleted successfully.", response.getBody());
         verify(courseService, times(1)).deleteCourse(eq(courseId), eq(request));
     }
+
+    @Test
+    void testSearchCourses() {
+        String keyword = "Java";
+        List<CourseDto> courseList = Arrays.asList(
+                new CourseDto(1, "Java Basics", "Learn Java", 10, null, "John Doe"),
+                new CourseDto(2, "Advanced Java", "Deep dive Java", 15, null, "Jane Smith")
+        );
+
+        // Mock the service method to return the list when called with "Java"
+        when(courseService.searchCoursesByKeyword(keyword)).thenReturn(courseList);
+
+        // Call the controller method
+        ResponseEntity<List<CourseDto>> response = courseController.searchCourses(keyword);
+
+        // Verify the response status and body
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(courseList, response.getBody());
+
+        // Verify that service method was called once with the keyword
+        verify(courseService, times(1)).searchCoursesByKeyword(keyword);
+    }
+
 }

@@ -17,6 +17,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.*;
 
 @Service
@@ -200,7 +201,8 @@ public class QuizService {
 
     //Fix: Reuse Random instance instead of creating a new one every time
     // Reuse a single Random instance to improve performance and avoid creating a new one every method call.
-    private static final Random RANDOM = new Random();
+    private static final SecureRandom RANDOM = new SecureRandom();
+
 
     public void generateQuestions(Quiz quiz, int questionType, Course course_id) throws Exception {
 

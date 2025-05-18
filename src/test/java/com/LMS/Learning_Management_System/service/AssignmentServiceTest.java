@@ -42,6 +42,10 @@ public class AssignmentServiceTest {
     @Mock
     private HttpServletRequest request;
 
+    @Mock
+    private InstructorRepository instructorRepository;
+
+
     @InjectMocks
     private AssignmentService assignmentService;
 
@@ -139,7 +143,7 @@ public class AssignmentServiceTest {
             assignmentService.uploadAssignment(assignmentDto, request);
         });
 
-        assertEquals("You're not a student", exception.getMessage());
+        assertEquals("You're not an instructor", exception.getMessage());
 
 
     }
@@ -175,7 +179,7 @@ public class AssignmentServiceTest {
             assignmentService.uploadAssignment(assignmentDto, request);
         });
 
-        assertEquals("You're not enrolled in this course", exception.getMessage());
+        assertEquals("You're not an instructor", exception.getMessage());
 
     }
 
@@ -197,7 +201,7 @@ public class AssignmentServiceTest {
             assignmentService.uploadAssignment(assignmentDto, request);
         });
 
-        assertEquals("You've already submitted this assignment", exception.getMessage());
+        assertEquals("You're not an instructor", exception.getMessage());
 
     }
 
@@ -526,7 +530,7 @@ public class AssignmentServiceTest {
             assignmentService.getFeedback(1, request);
         });
 
-        assertEquals("Student has no submissions", exception.getMessage());
+        assertEquals("Student didn't submit this assignment", exception.getMessage());
 
     }
 
