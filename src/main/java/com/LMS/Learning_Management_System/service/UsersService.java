@@ -63,7 +63,14 @@ public class UsersService {
     }
 
     public boolean validatePassword(String rawPassword, String encodedPassword) {
+        System.out.println(passwordEncoder.encode("12345"));
+        System.out.println("Raw Password: " + rawPassword);
+        System.out.println("Encoded Password: " + encodedPassword);
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 
 }
+/*
+
+
+ */
