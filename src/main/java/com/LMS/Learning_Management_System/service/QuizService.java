@@ -198,7 +198,7 @@ public class QuizService {
 
     }
 
-    // ✅ Fix: Reuse Random instance instead of creating a new one every time
+    //Fix: Reuse Random instance instead of creating a new one every time
     // Reuse a single Random instance to improve performance and avoid creating a new one every method call.
     private static final Random RANDOM = new Random();
 
