@@ -43,5 +43,15 @@ public class EnrollmentController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    //new feature
+    @GetMapping("/count_enrolled/{courseId}")
+    public ResponseEntity<?> countEnrolledStudents(@PathVariable int courseId) {
+        try {
+            int count = enrollmentService.countEnrolledStudents(courseId);
+            return ResponseEntity.ok("Total enrolled students: " + count);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 }

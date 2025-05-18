@@ -112,14 +112,16 @@ public class CourseService {
     public void uploadMediaFile(int courseId, MultipartFile file, HttpServletRequest request) {
         Course course = check_before_logic(courseId , request);
 
-        String uploadDir = "media/uploads/";
+        //updated the directory to actual one
+        String uploadDir = "C:\\Users\\20115\\Downloads";
         File directory = new File(uploadDir);
         if (!directory.exists()) {
             directory.mkdirs();
         }
 
         String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        File destination = new File(uploadDir + fileName);
+        //File destination = new File(uploadDir + fileName);
+        File destination = new File(directory , fileName);
 
         try {
             file.transferTo(destination);
@@ -129,10 +131,9 @@ public class CourseService {
 
         course.setMedia(fileName);
         courseRepository.save(course);
+
+
     }
-
-
-
 
     private Course check_before_logic(int courseId, HttpServletRequest request)
     {
@@ -173,5 +174,19 @@ public class CourseService {
         }
     }
 
+    public List<CourseDto> searchCoursesByKeyword(String keyword) {
+        List<Course> allCourses = courseRepository.findAll();
+        return allCourses.stream()
+                .filter(course -> course.getCourseName().toLowerCase().contains(keyword.toLowerCase()))
+                .map(course -> new CourseDto(
+                        course.getCourseId(),
+                        course.getCourseName(),
+                        course.getDescription(),
+                        course.getDuration(),
+                        course.getMedia(),
+                        course.getInstructorId().getFirstName()
+                ))
+                .collect(Collectors.toList());
+    }
 
 }

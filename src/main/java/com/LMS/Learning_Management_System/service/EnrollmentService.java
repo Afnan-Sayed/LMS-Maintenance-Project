@@ -129,4 +129,11 @@ public class EnrollmentService {
         }
         return existingCourse;
     }
+    //new feature
+    public int countEnrolledStudents(int courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalArgumentException("No course found with the given ID: " + courseId));
+        List<Enrollment> enrollments = enrollmentRepository.findByCourse(course);
+        return enrollments.size(); // Replaced countByCourse with list size
+    }
 }
