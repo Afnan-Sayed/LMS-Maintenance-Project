@@ -198,21 +198,27 @@ public class QuizService {
 
     }
 
-    public void generateQuestions(Quiz quiz,int questionType, Course course_id) throws Exception {
+    //Fix: Reuse Random instance instead of creating a new one every time
+    // Reuse a single Random instance to improve performance and avoid creating a new one every method call.
+    private static final Random RANDOM = new Random();
+
+    public void generateQuestions(Quiz quiz, int questionType, Course course_id) throws Exception {
 
         List<Question> allQuestions = questionRepository
-                .findQuestionsByCourseIdAndQuestionType(course_id.getCourseId(),questionType);  // get all questions with same type
+                .findQuestionsByCourseIdAndQuestionType(course_id.getCourseId(), questionType);  // get all questions with same type
         List<Question> emptyQuestions = questionRepository
-                .findEmptyQuestionsByCourseIdAndQuestionType(course_id.getCourseId(),questionType);
-        if(allQuestions.size()< 5 )
-            throw new Exception("No enough Questions to create quiz!\n");
-        if(emptyQuestions.size() < 5 )
-            throw new Exception("No enough unassigned questions to create new quiz! number: "+emptyQuestions.size()+" type "+questionType+"\n"); ///
-        Random random = new Random();
-        Set<Integer> selectedIndices = new HashSet<>();  // To track selected indices
+                .findEmptyQuestionsByCourseIdAndQuestionType(course_id.getCourseId(), questionType);
+
+        if (allQuestions.size() < 5)
+            throw new Exception("Not enough questions to create quiz!");
+
+        if (emptyQuestions.size() < 5)
+            throw new Exception("Not enough unassigned questions to create quiz! Found: " + emptyQuestions.size() + " of type: " + questionType);
+
+        Set<Integer> selectedIndices = new HashSet<>();
         int count = 0;
         while (count < 5) {
-            int randomNumber = random.nextInt(allQuestions.size());
+            int randomNumber = RANDOM.nextInt(allQuestions.size());
 
             if (!selectedIndices.contains(randomNumber)) {
                 selectedIndices.add(randomNumber);
@@ -222,6 +228,9 @@ public class QuizService {
             }
         }
     }
+
+
+
 
     public QuizDto getQuizByID (int id, HttpServletRequest request) {
         Users loggedInUser = (Users) request.getSession().getAttribute("user");

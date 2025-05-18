@@ -26,7 +26,7 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .cors(cors -> cors.disable())
-                .csrf().disable()
+                .csrf(csrf -> csrf.disable())
                 .logout(logout -> logout
                         .logoutUrl("/api/auth/logout")
                         .clearAuthentication(true)

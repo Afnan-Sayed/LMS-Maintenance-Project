@@ -79,4 +79,25 @@ public class AssigmentController {
             return ResponseEntity.badRequest().body(Collections.singletonList(e.getMessage()));
         }
     }
+
+    @DeleteMapping("/deleteAssignment/assigID={assigID}")
+    public ResponseEntity<String> deleteAssignment(@PathVariable int assigID, HttpServletRequest request ){
+        try {
+            assignmentService.deleteAssignment(assigID, request);
+            return ResponseEntity.ok("Assignment has been deleted successfully.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // endpoint of the new feature
+    @GetMapping("/isSubmitted/assignmentId={assignmentId}")
+    public ResponseEntity<Boolean> isAssignmentSubmitted(@PathVariable int assignmentId, HttpServletRequest request) {
+        try {
+            boolean isSubmitted = assignmentService.isAssignmentSubmitted(assignmentId, request);
+            return ResponseEntity.ok(isSubmitted);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(false);
+        }
+    }
 }
